@@ -1,0 +1,11 @@
+.env
+.vscode
+.idea
+
+apidoc
+*.conf
+*.ovpn
+*.pem
+portmap
+
+

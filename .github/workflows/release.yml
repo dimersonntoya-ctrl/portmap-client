@@ -1,0 +1,81 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build Cross-Platform Binaries
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - os: darwin
+            arch: amd64
+            binary: portmap-darwin-amd64
+          - os: darwin
+            arch: arm64
+            binary: portmap-darwin-arm64
+          - os: linux
+            arch: amd64
+            binary: portmap-linux-amd64
+          - os: windows
+            arch: amd64
+            binary: portmap-windows-amd64.exe
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+          cache: true
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Build binary
+        env:
+          GOOS: ${{ matrix.os }}
+          GOARCH: ${{ matrix.arch }}
+        run: |
+          go build -v -o "dist/${{ matrix.binary }}" -ldflags="-s -w" .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.binary }}
+          path: dist/${{ matrix.binary }}
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: dist
+
+      - name: Create checksum file
+        run: |
+          cd dist
+          find . -type f -exec sh -c 'sha256sum {} > {}.sha256' \;
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/portmap-darwin-amd64/*
+            dist/portmap-darwin-arm64/*
+            dist/portmap-linux-amd64/*
+            dist/portmap-windows-amd64.exe/*
+          draft: false
+          prerelease: false
