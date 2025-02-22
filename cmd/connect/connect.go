@@ -26,6 +26,9 @@ func NewCommand() *cobra.Command {
 		Use:   "connect [config-file]",
 		Short: "Connect to WireGuard VPN",
 		RunE: func(cmd *cobra.Command, args []string) error {
+			// Enable VT processing at the start
+			enableVirtualTerminalProcessing()
+
 			if len(args) != 1 {
 				return fmt.Errorf("config file path required")
 			}
@@ -99,9 +102,9 @@ func NewCommand() *cobra.Command {
 			}
 
 			// Print connection info and mapping rules
-            fmt.Printf("\n✓ Connected to %s via %s\n", serverHostname, mgr.GetInterfaceName())
+			fmt.Printf("\n✓ Connected to %s via %s\n", serverHostname, mgr.GetInterfaceName())
 			if !serviceMode {
-                fmt.Printf("\nPress Ctrl+C to disconnect\n")
+				fmt.Printf("\nPress Ctrl+C to disconnect\n")
 				if len(mappingRules) > 0 {
 					fmt.Printf("\n✓ Available mapping rules:\n")
 					for _, rule := range mappingRules {
@@ -120,6 +123,7 @@ func NewCommand() *cobra.Command {
 			defer ticker.Stop()
 
 			go func() {
+				var lastRx, lastTx uint64
 				for {
 					select {
 					case <-sigChan:
@@ -134,9 +138,13 @@ func NewCommand() *cobra.Command {
 						// Get traffic stats
 						if !serviceMode && len(mappingRules) > 0 {
 							rxBytes, txBytes := mgr.GetTrafficStats()
-							fmt.Print("\033[2A\033[K")
-							fmt.Printf("↓ %s received\n", humanize.Bytes(uint64(rxBytes)))
-							fmt.Printf("↑ %s sent\n", humanize.Bytes(uint64(txBytes)))
+							if rxBytes != lastRx || txBytes != lastTx {
+								// Clear previous lines and move cursor up
+								fmt.Print("\033[2F\033[J")
+								fmt.Printf("↓ %s received\n", humanize.Bytes(uint64(rxBytes)))
+								fmt.Printf("↑ %s sent\n", humanize.Bytes(uint64(txBytes)))
+								lastRx, lastTx = rxBytes, txBytes
+							}
 						}
 					}
 				}

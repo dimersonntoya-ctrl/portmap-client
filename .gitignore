@@ -7,5 +7,7 @@ apidoc
 *.ovpn
 *.pem
 portmap
-
+*.exe
+*.dll
+Dockerfile
 

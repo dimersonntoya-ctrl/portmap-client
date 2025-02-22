@@ -8,22 +8,27 @@ on:
 jobs:
   build:
     name: Build Cross-Platform Binaries
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
           - os: darwin
             arch: amd64
             binary: portmap-darwin-amd64
+            runner: macos-latest
           - os: darwin
             arch: arm64
             binary: portmap-darwin-arm64
+            runner: macos-latest
           - os: linux
             arch: amd64
             binary: portmap-linux-amd64
+            runner: ubuntu-latest
           - os: windows
             arch: amd64
             binary: portmap-windows-amd64.exe
+            runner: windows-latest
+
+    runs-on: ${{ matrix.runner }}
 
     steps:
       - name: Checkout code
@@ -42,8 +47,9 @@ jobs:
         env:
           GOOS: ${{ matrix.os }}
           GOARCH: ${{ matrix.arch }}
+          CGO_ENABLED: ${{ matrix.os == 'linux' && '0' || '1' }}
         run: |
-          go build -v -o "dist/${{ matrix.binary }}" -ldflags="-s -w" .
+          go build -v -o "dist/${{ matrix.binary }}" -ldflags="-s -w" -tags "${{ matrix.os }}" .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

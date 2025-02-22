@@ -172,7 +172,31 @@ func (m *Manager) addRoutes() error {
 				return fmt.Errorf("failed to add route %s: %v: %s", allowedIP, err, out)
 			}
 		case "windows":
-			cmd := exec.Command("route", "add", allowedIP, "IF", m.interfaceName)
+			// Get interface index first
+			indexCmd := exec.Command("netsh", "interface", "ipv4", "show", "interfaces")
+			output, err := indexCmd.CombinedOutput()
+			if err != nil {
+				return fmt.Errorf("failed to get interface index: %v: %s", err, output)
+			}
+
+			// Parse output to find interface index
+			lines := strings.Split(string(output), "\n")
+			var idx string
+			for _, line := range lines {
+				if strings.Contains(line, m.interfaceName) {
+					fields := strings.Fields(line)
+					if len(fields) > 0 {
+						idx = fields[0]
+						break
+					}
+				}
+			}
+
+			if idx == "" {
+				return fmt.Errorf("could not find interface index for %s", m.interfaceName)
+			}
+
+			cmd := exec.Command("route", "add", allowedIP, fmt.Sprintf("IF %s", idx))
 			if out, err := cmd.CombinedOutput(); err != nil {
 				return fmt.Errorf("failed to add route %s: %v: %s", allowedIP, err, out)
 			}

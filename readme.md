@@ -7,18 +7,27 @@ Welcome to the first ever [Portmap.io](https://portmap.io) Client! This command-
 Subscribe to the premium plan and get your API token from the [portmap.io profile page](https://portmap.io/profile).
 
 Download the latest binary for your platform from the releases page:
+### MacOS and Linux
 
 ```bash
 # macOS
-curl -Lo portmap https://github.com/portmap/client/releases/latest/download/portmap-darwin-amd64
+curl -Lo portmap https://github.com/portmap-io/portmap-client/releases/latest/download/portmap-darwin-arm64
 chmod +x portmap
 sudo mv portmap /usr/local/bin/
 
 # Linux
-curl -Lo portmap https://github.com/portmap/client/releases/latest/download/portmap-linux-amd64
+curl -Lo portmap https://github.com/portmap-io/portmap-client/releases/latest/download/portmap-linux-amd64
 chmod +x portmap
 sudo mv portmap /usr/local/bin/
 ```
+### Windows
+Download portmap.exe from releases page
+https://github.com/portmap-io/portmap-client/releases/latest/download/portmap-windows-amd64.exe
+Download wintun.dll from [wintun.net](https://www.wintun.net/)
+
+Place `wintun.dll` in the same directory as `portmap.exe`
+
+Without `wintun.dll`, the WireGuard connection will fail to establish on Windows systems.
 
 ## Global Options
 
