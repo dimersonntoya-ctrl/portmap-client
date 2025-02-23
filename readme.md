@@ -1,6 +1,19 @@
 # Portmap.io Client
 
+[![Release](https://img.shields.io/github/v/release/portmap-io/portmap-client)](https://github.com/portmap-io/portmap-client/releases/latest)
+[![License](https://img.shields.io/github/license/portmap-io/portmap-client)](https://github.com/portmap-io/portmap-client/blob/main/LICENSE)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/portmap-io/portmap-client)](https://golang.org/doc/devel/release.html)
+[![Downloads](https://img.shields.io/github/downloads/portmap-io/portmap-client/total)](https://github.com/portmap-io/portmap-client/releases)
+
 Welcome to the first ever [Portmap.io](https://portmap.io) Client! This command-line tool allows you to easily manage your portmap.io mapping rules using the [portmap.io REST API](https://portmap.io/restapi). Whether you're setting up configurations, managing mapping rules, or connecting to a VPN, this client has you covered.
+
+## Features
+
+- **Configuration Management**: List, show details, and download configuration files or SSH key files.
+- **Mapping Rules Management**: List, create, show details, and delete mapping rules.
+- **Connect to WireGuard VPN**: Establish a VPN connection using WireGuard.
+- **Cross-Platform**: Available for macOS, Linux, and Windows.
+
 
 ## Installation
 
@@ -184,3 +197,6 @@ PORTMAP_FORMAT=text
 PORTMAP_REGION=fra1
 ```
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
