@@ -196,7 +196,14 @@ func (m *Manager) addRoutes() error {
 				return fmt.Errorf("could not find interface index for %s", m.interfaceName)
 			}
 
-			cmd := exec.Command("route", "add", allowedIP, fmt.Sprintf("IF %s", idx))
+			_, ipNet, err := net.ParseCIDR(allowedIP)
+			if err != nil {
+				return fmt.Errorf("invalid CIDR format: %v", err)
+			}
+			network := ipNet.IP.String()
+			mask := net.IP(ipNet.Mask).String()
+			gateway := strings.Split(m.config.Interface.Address, "/")[0]
+			cmd := exec.Command("route", "add", network, "mask", mask, gateway, "metric", "1", "IF", idx)
 			if out, err := cmd.CombinedOutput(); err != nil {
 				return fmt.Errorf("failed to add route %s: %v: %s", allowedIP, err, out)
 			}
