@@ -137,8 +137,15 @@ func (m *Manager) configureIPAddress() error {
 			return fmt.Errorf("failed to set IP address: %v: %s", err, out)
 		}
 	case "linux":
-		cmd := exec.Command("ip", "addr", "add", m.config.Interface.Address, "dev", m.interfaceName)
-		if out, err := cmd.CombinedOutput(); err != nil {
+		// First bring up the interface
+		upCmd := exec.Command("ip", "link", "set", m.interfaceName, "up")
+		if out, err := upCmd.CombinedOutput(); err != nil {
+			return fmt.Errorf("failed to bring up interface: %v: %s", err, out)
+		}
+
+		// Then add the IP address
+		addrCmd := exec.Command("ip", "addr", "add", "dev", m.interfaceName, m.config.Interface.Address)
+		if out, err := addrCmd.CombinedOutput(); err != nil {
 			return fmt.Errorf("failed to set IP address: %v: %s", err, out)
 		}
 	case "windows":

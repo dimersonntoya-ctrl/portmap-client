@@ -6,7 +6,7 @@ apidoc
 *.conf
 *.ovpn
 *.pem
-portmap
+portmap*
 *.exe
 *.dll
 Dockerfile
