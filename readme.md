@@ -20,16 +20,14 @@ Welcome to the first ever [Portmap.io](https://portmap.io) Client! This command-
 Subscribe to the premium plan and get your API token from the [portmap.io profile page](https://portmap.io/profile).
 
 Download the latest binary for your platform from the releases page:
-### MacOS and Linux
+### MacOS
 
 ```bash
-# macOS
 curl -Lo portmap https://github.com/portmap-io/portmap-client/releases/latest/download/portmap-darwin-arm64
 chmod +x portmap
 ```
-
+### Linux
 ```
-# Linux
 curl -Lo portmap https://github.com/portmap-io/portmap-client/releases/latest/download/portmap-linux-amd64
 chmod +x portmap
 
