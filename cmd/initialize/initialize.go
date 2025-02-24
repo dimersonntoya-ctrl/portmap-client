@@ -21,11 +21,11 @@ func NewCommand() *cobra.Command {
 
 			var format string
 			for {
-				fmt.Print("Choose default output format (json/text) [json]: ")
+				fmt.Print("Choose default output format (json/text) [text]: ")
 				fmt.Scanln(&format)
 				format = strings.ToLower(format)
 				if format == "" {
-					format = "json"
+					format = "text"
 				}
 				if format == "json" || format == "text" {
 					break
