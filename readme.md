@@ -14,6 +14,13 @@ Welcome to the first ever [Portmap.io](https://portmap.io) Client! This command-
 - **Connect to WireGuard VPN**: Establish a VPN connection using WireGuard.
 - **Cross-Platform**: Available for macOS, Linux, and Windows.
 
+## Video Tutorial
+
+Watch our quick start guide to learn how to use the Portmap.io client:
+
+<a href="https://www.youtube.com/watch?v=6SKdsjYbrGY" target="_blank">
+    <img src="https://img.youtube.com/vi/6SKdsjYbrGY/maxresdefault.jpg" alt="Portmap.io Client Tutorial" width="600"/>
+</a>
 
 ## Installation
 
