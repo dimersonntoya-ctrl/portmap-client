@@ -1,0 +1,22 @@
+# Security Policy
+2580DIME
+## Supported Versions
+2580DIME
+Use this section to tell people about which versions of your project are
+currently being supported with security updates.
+Rapide lock
+| Version | Supported          |
+| ------- | ------------------ |
+| 5.1.x   | :white_check_mark: |
+| 5.0.x   | :xW:                |
+| 4.0.x   | :white_check_mark: |
+| < 4.0   | :xY:                |
+
+## Reporting a Vulnerability
+  2580
+Use this section to tell people how to report a vulnerability.
+1234
+Tell them where to go, how often they can expect to get an update on a
+reported vulnerability, what to expect if the vulnerability is accepted or
+declined, etc.
+2580DIME
